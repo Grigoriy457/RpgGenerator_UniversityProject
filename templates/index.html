@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Главная | Конструктор RPG{% endblock %}
+
+{% block content %}
+
+<!-- Приветственный блок -->
+<section class="hero">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Создавай. Играй. Делись.</h1>
+    <p class="lead">Конструктор настольных и ролевых игр с полной свободой. Создавай персонажей, правила, и свои уникальные миры.</p>
+    <a href="#" class="btn btn-primary btn-lg mt-3">Начать</a>
+  </div>
+</section>
+
+<!-- Преимущества -->
+<section class="py-5">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <div class="feature-icon mb-3">🎲</div>
+        <h5>Модульность</h5>
+        <p>Создавай кастомные кубики, атрибуты и действия. Всё — в одном редакторе.</p>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-icon mb-3">🧙</div>
+        <h5>Гибкие персонажи</h5>
+        <p>Проектируй персонажей с уникальными навыками, инвентарём и параметрами.</p>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-icon mb-3">🌐</div>
+        <h5>Совместные игры</h5>
+        <p>Играй онлайн с друзьями или оффлайн — сохраняй сессии, загружай карточки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Популярные игры -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h3 class="mb-4">Популярные игры</h3>
+    <div class="row g-4">
+      {% for game in popular_games %}
+      <div class="col-md-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ game.name }}</h5>
+            <p class="card-text">{{ game.description }}</p>
+            <a href="{{ game.url }}" class="btn btn-outline-primary">Посмотреть</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

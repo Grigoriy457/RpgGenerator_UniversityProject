@@ -1,0 +1,13 @@
+/config/.env
+/config/ssl/cert.key
+/config/service-account.json
+/mesh/test/
+/mesh/chromedriver.path
+/logs/
+
+/venv/
+/.idea/
+**/__pycache__/
+/SERVER.lnk
+
+docker-compose.yml
