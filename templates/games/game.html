@@ -7,14 +7,16 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="mb-0">{{ game.title }} ({% if game.is_public %}публичная{% else %}приватная{% endif %})</h1>
       <div>
-        <a href="/games/{{ game.id }}/edit" class="btn btn-warning ms-2">
-          <i class="bi bi-pencil"></i> Редактировать
-        </a>
-        <form action="/games/{{ game.id }}/delete" method="post" class="d-inline ms-2">
-          <button type="submit" class="btn btn-danger">
-            <i class="bi bi-trash"></i> Удалить
-          </button>
-        </form>
+        {% if owner.id == request.session.get("user", {"id": None})["id"] %}
+          <a href="/games/{{ game.id }}/edit" class="btn btn-warning ms-2">
+            <i class="bi bi-pencil"></i> Редактировать
+          </a>
+          <form action="/games/{{ game.id }}/delete" method="post" class="d-inline ms-2">
+            <button type="submit" class="btn btn-danger">
+              <i class="bi bi-trash"></i> Удалить
+            </button>
+          </form>
+        {% endif %}
       </div>
     </div>
     <div class="row">
