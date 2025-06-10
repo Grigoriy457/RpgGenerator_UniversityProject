@@ -12,6 +12,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(routes.index.router)
 app.include_router(routes.auth.router)
 app.include_router(routes.games.router)
+app.include_router(routes.profile.router)
 
 
 if __name__ == "__main__":

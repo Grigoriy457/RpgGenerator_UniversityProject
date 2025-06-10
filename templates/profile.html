@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h1 class="mb-4">Профиль</h1>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+        <p class="card-text"><strong>Дата регистрации:</strong> {{ user.created_at.strftime('%d.%m.%Y') }}</p>
+      </div>
+    </div>
+
+    <h2 class="mb-4">Мои игры</h2>
+    {% if my_games | length > 0 %}
+    {% else %}
+      <p>У тебя ещё нет игр.</p>
+    {% endif %}
+    {% for game in my_games %}
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            {% if game.image %}
+              <img src="data:image/png;base64,{{ game.image_base64 }}" class="img-fluid rounded-start" alt="{{ game.title }}">
+            {% else %}
+              <div class="d-flex align-items-center justify-content-center bg-secondary text-white" style="height: 100%; width: 100%; aspect-ratio: 1;">
+                <i class="bi bi-image" style="font-size: 2rem;"></i>
+                <span class="ms-2">Нет изображения</span>
+              </div>
+            {% endif %}
+          </div>
+          <div class="col-md-8">
+            <div class="card-body d-flex flex-column" style="height: 100%;">
+              <h5 class="card-title">
+                {% if game.is_public %}
+                  <i class="bi bi-eye"></i>
+                {% else %}
+                {% endif %}
+                {{ game.title }}
+              </h5>
+              <p class="card-text">{{ game.description | truncate(130) }}</p>
+              <p class="card-text"><strong>Жанр:</strong> {{ game.genre.value }}</p>
+              <p class="card-text"><strong>Дата создания:</strong> {{ game.created_at.strftime('%d.%m.%Y') }}</p>
+              <p class="card-text"><strong>Просмотры:</strong> {{ game.views }}</p>
+              <div class="mt-auto" style="margin-top: auto;">
+                <a href="/games/{{ game.id }}" class="btn btn-primary w-auto">Подробнее</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
