@@ -1,0 +1,28 @@
+aiomysql==0.2.0
+email-validator~=2.2.0
+fastapi~=0.115.3
+google-cloud-logging==3.6.0
+Jinja2~=3.1.4
+mysql-connector-python==9.1.0
+nest-asyncio==1.5.8
+pandas~=2.2.2
+plotly==5.21.0
+PyJWT~=2.8.0
+pymorphy3~=2.0.2
+pymorphy3-dicts-ru
+python-dateutil==2.8.2
+python-dotenv~=1.0.1
+python-multipart
+pytz==2023.3.post1
+SQLAlchemy~=2.0.30
+uvicorn~=0.29.0
+
+redbird @ git+https://github.com/Grigoriy457/red-bird.git@1.0
+redbird==1.0
+rocketry @ git+https://github.com/Grigoriy457/rocketry.git@3.0.0
+rocketry==3.0.0
+
+pydantic~=2.9.2
+
+cryptography
+itsdangerous

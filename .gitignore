@@ -1,8 +1,6 @@
 /config/.env
 /config/ssl/cert.key
 /config/service-account.json
-/mesh/test/
-/mesh/chromedriver.path
 /logs/
 
 /venv/

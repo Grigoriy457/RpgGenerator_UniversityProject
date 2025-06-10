@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import config
-from database import regions, models
+from database import models
 
 import sqlalchemy
 import sqlalchemy.sql

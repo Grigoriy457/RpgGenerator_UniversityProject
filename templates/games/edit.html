@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}Редактирование игры{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <form method="post" action="/games/{{ game.id }}/edit" enctype="multipart/form-data">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Редактирование игры</h1>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="is_public" name="is_public" {% if game.is_public %}checked{% endif %}>
+          <label for="is_public" class="form-check-label">Публичная игра</label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="title" class="form-label">Название</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ game.title }}" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Описание</label>
+        <textarea class="form-control" id="description" name="description" rows="5" required>{{ game.description }}</textarea>
+      </div>
+      <div class="mb-3">
+        <label for="genre" class="form-label">Жанр</label>
+        <select class="form-select" id="genre" name="genre" required>
+          {% for genre in genres %}
+            <option value="{{ genre.name }}" {% if genre == game.genre %}selected{% endif %}>
+              {{ genre.value }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Изображение</label>
+        <input type="file" class="form-control" id="image" name="image">
+        {% if game.image_base64 %}
+          <img src="data:image/png;base64,{{ game.image_base64 }}" alt="Текущее изображение" class="img-fluid mt-3 w-50">
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="characters" class="form-label fs-4">Персонажи</label>
+        <div id="charactersContainer">
+          {% for character in game.characters %}
+            <div class="border p-3 mb-3">
+              <input type="hidden" class="form-control" name="character_id[]" value="{{ character.id }}" readonly>
+              <input type="hidden" class="form-control" name="character_avatar_base64[]" value="{{ character.avatar_base64 }}" readonly>
+              <div class="mb-2">
+                <label class="form-label fs-5" for="character_name_{{ character.id }}">Имя персонажа</label>
+                <input type="text" class="form-control" id="character_name_{{ character.id }}" name="character_name[]" value="{{ character.name }}" required>
+              </div>
+              <div class="mb-2">
+                <label class="form-label small" for="character_description_{{ character.id }}">Описание персонажа</label>
+                <textarea class="form-control" id="character_description_{{ character.id }}" name="character_description[]" required>{{ character.description }}</textarea>
+              </div>
+              <div class="mb-2">
+                <label class="form-label small" for="character_avatar_{{ character.id }}">Аватар</label>
+                <input type="file" class="form-control" id="character_avatar_{{ character.id }}" name="character_avatar[]">
+                {% if character.avatar %}
+                  <img src="data:image/png;base64,{{ character.avatar_base64 }}" alt="Аватар персонажа" class="img-fluid mt-3 w-25">
+                {% endif %}
+              </div>
+              <button type="button" class="btn btn-danger" onclick="removeCharacter(this)">Удалить</button>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addCharacter()">Добавить персонажа</button>
+      </div>
+
+      <div class="mb-3">
+        <label for="rules" class="form-label fs-4">Правила</label>
+        <div id="rulesContainer">
+          {% for rule in game.rules %}
+            <div class="border p-3 mb-3">
+              <input type="hidden" class="form-control" name="rule_id[]" value="{{ rule.id }}" readonly>
+              <div class="mb-2">
+                <label class="form-label small">Название правила</label>
+                <input type="text" class="form-control" name="rule_name[]" value="{{ rule.name }}" required>
+              </div>
+              <div class="mb-2">
+                <label class="form-label small">Описание правила</label>
+                <textarea class="form-control" name="rule_description[]" required>{{ rule.description }}</textarea>
+              </div>
+              <button type="button" class="btn btn-danger" onclick="removeRule(this)">Удалить</button>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addRule()">Добавить правило</button>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  function addCharacter() {
+    const container = document.getElementById('charactersContainer');
+    const newCharacter = document.createElement('div');
+    newCharacter.className = 'border p-3 mb-3';
+    newCharacter.innerHTML = `
+      <input type="hidden" class="form-control" name="character_id[]" value="" readonly>
+      <input type="hidden" class="form-control" name="character_avatar_base64[]" value="" readonly>
+      <div class="mb-2">
+        <label class="form-label small">Имя персонажа</label>
+        <input type="text" class="form-control" name="character_name[]" required>
+      </div>
+      <div class="mb-2">
+        <label class="form-label small">Описание персонажа</label>
+        <textarea class="form-control" name="character_description[]" required></textarea>
+      </div>
+      <div class="mb-2">
+        <label class="form-label small">Аватар</label>
+        <input type="file" class="form-control" name="character_avatar[]">
+      </div>
+      <button type="button" class="btn btn-danger" onclick="removeCharacter(this)">Удалить</button>
+    `;
+    container.appendChild(newCharacter);
+  }
+
+  function removeCharacter(button) {
+    button.parentElement.remove();
+  }
+
+  function addRule() {
+    const container = document.getElementById('rulesContainer');
+    const newRule = document.createElement('div');
+    newRule.className = 'border p-3 mb-3';
+    newRule.innerHTML = `
+      <input type="hidden" class="form-control" name="rule_id[]" value="" readonly>
+      <div class="mb-2">
+        <label class="form-label small">Название правила</label>
+        <input type="text" class="form-control" name="rule_name[]" required>
+      </div>
+      <div class="mb-2">
+        <label class="form-label small">Описание правила</label>
+        <textarea class="form-control" name="rule_description[]" required></textarea>
+      </div>
+      <button type="button" class="btn btn-danger" onclick="removeRule(this)">Удалить</button>
+    `;
+    container.appendChild(newRule);
+  }
+
+  function removeRule(button) {
+    button.parentElement.remove();
+  }
+</script>
+{% endblock %}

@@ -1,1 +1,1 @@
-from routes import index
+from routes import index, auth, games, characters, profile

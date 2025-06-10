@@ -6,11 +6,17 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link active" href="#">Главная</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Игры</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Персонажи</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Создать</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Войти</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/">Главная</a></li>
+        <li class="nav-item"><a class="nav-link" href="/games">Игры</a></li>
+        <li class="nav-item"><a class="nav-link" href="/characters">Персонажи</a></li>
+        {% if request.session.user %}
+          <li class="nav-item">
+            <a class="nav-link" href="/profile">👤 {{ request.session.user.username }}</a>
+          </li>
+          <li class="nav-item d-flex"><a class="btn btn-outline-secondary" href="/logout">Выход</a></li>
+        {% else %}
+          <li class="nav-item d-flex"><a class="btn btn-outline-secondary" href="/login">Вход</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>
